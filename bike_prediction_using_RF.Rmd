@@ -1,0 +1,179 @@
+
+
+```{r}
+#getting all the packages installed
+library(readxl)
+install.packages("dplyr")
+library(dplyr)
+install.packages("ggplot2")
+library(ggplot2)
+install.packages("tidyr")
+library(tidyr)
+install.packages("stringr")
+library(stringr)
+install.packages("readr")
+library(readr)
+install.packages("corrplot")
+library(corrplot)
+install.packages("DataExplorer")
+library(DataExplorer)
+library(skimr)
+library(randomForest)
+install.packages("randomForest")
+library(randomForest)
+install.packages("caTools")
+library(caTools)
+```
+
+
+
+```{r}
+
+#reading the dataset
+filepath<-"bike_dataset.xlsx"
+
+df<- read_xlsx(filepath)
+#finding the column names
+col_names<-names(df)
+
+(col_names)
+
+```
+
+
+```{r}
+#loading the preview of the dataframe
+head(df)
+
+```
+
+
+```{r}
+
+#null values
+(colSums(is.na(df)))
+#there are no null values
+```
+
+
+```{r}
+
+skim(df)
+
+
+
+```
+
+
+```{r}
+library(ggplot2)
+```
+
+```{r}
+
+ggplot(df, aes(x = factor(mnth), y = cnt)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  labs(title = "Monthly Distribution of Bikes Rented",
+       x = "Month",
+       y = "Total Bikes Rented") 
+```
+
+
+
+
+
+
+
+
+```{r}
+ggplot(df, aes(x = factor(df$year), y = cnt)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  labs(title = "yearly Distribution of Bikes Rented",
+       x = "year",
+       y = "Total Bikes Rented")
+
+```
+```{r}
+names(df)
+
+```
+
+
+```{r}
+#there are some outliers in the windspeed attribute
+boxplot(df$windspeed, main="Outliers Analysis", ylab="Values")
+```
+
+
+```{r}
+
+train_index <- sample(seq_len(nrow(df)), 0.7 * nrow(df))
+training_data <- df[train_index, ]
+testing_data <- df[-train_index, ]
+```
+
+```{r}
+
+(testing_data)
+```
+
+```{r}
+# Train the random forest model
+#selected features:
+selected_features<-c('season','weathersit','temp','atemp','hum','windspeed')
+x_train<-training_data[,selected_features]
+y_train<-training_data$cnt
+random_forest_model <- randomForest(x = x_train, y = y_train, ntree = 500)
+
+```
+
+
+```{r}
+x_test<-testing_data[,selected_features]
+
+y_test
+```
+
+
+```{r}
+
+predictions <- predict(random_forest_model, newdata = x_test)
+
+```
+
+
+```{r}
+
+#random forest predictions on the basis of environment and seasons
+predictions
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

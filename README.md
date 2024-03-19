@@ -4,4 +4,4 @@ To run the file, import it into R studio and then code can be run by pressing ru
 
 incase of any question please feel free to reach out to me
 
-gmail: vedant.hire@somaiya.edu
+
